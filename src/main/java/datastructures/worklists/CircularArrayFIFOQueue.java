@@ -3,49 +3,78 @@ package datastructures.worklists;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
+import java.util.NoSuchElementException;
+
 /**
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
 public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
+    private int front;
+    private int back;
+    private E[] arr;
+    private int size;
+
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
-        throw new NotYetImplementedException();
+        arr = (E[])new Comparable[capacity];
     }
 
     @Override
     public void add(E work) {
-        throw new NotYetImplementedException();
+        if (isFull()) {
+            throw new IllegalStateException("Queue is full");
+        }
+        arr[back] = work;
+        back = (back + 1) % capacity();
+        size++;
     }
 
     @Override
     public E peek() {
-        throw new NotYetImplementedException();
+        return peek(0);
     }
 
     @Override
     public E peek(int i) {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        } else if (i < 0 || i >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        return arr[(front + i) % capacity()];
     }
 
     @Override
     public E next() {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        }
+        E work = arr[front];
+        front = (front + 1) % capacity();
+        size--;
+        return work;
     }
 
     @Override
     public void update(int i, E value) {
-        throw new NotYetImplementedException();
+        if (!hasWork()) {
+            throw new NoSuchElementException();
+        } else if (i < 0 || i >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        arr[(front + i) % capacity()] = value;
     }
 
     @Override
     public int size() {
-        throw new NotYetImplementedException();
+        return size;
     }
 
     @Override
     public void clear() {
-        throw new NotYetImplementedException();
+        arr = (E[])new Comparable[capacity()];
+        size = 0;
     }
 
     @Override

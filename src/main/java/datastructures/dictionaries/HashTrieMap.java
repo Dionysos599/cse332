@@ -1,6 +1,5 @@
 package datastructures.dictionaries;
 
-import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
 
@@ -21,7 +20,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         }
 
         public HashTrieNode(V value) {
-            this.pointers = new HashMap<A, HashTrieNode>();
+            this.pointers = new HashMap<>();
             this.value = value;
         }
 
@@ -38,26 +37,100 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     @Override
     public V insert(K key, V value) {
-        throw new NotYetImplementedException();
+        if (key == null || value == null)
+            throw new IllegalArgumentException();
+
+        // Check if the key is in the trie
+        HashTrieNode temp = (HashTrieNode) root;
+        for (A alph : key) {
+            if (!temp.pointers.containsKey(alph)) {
+                temp.pointers.put(alph, new HashTrieNode());
+            }
+            temp = temp.pointers.get(alph);
+        }
+
+        V previous = temp.value;
+        temp.value = value;
+        // New key, increase the size
+        if (previous == null) {
+            size++;
+        }
+
+        return previous;
     }
 
     @Override
     public V find(K key) {
-        throw new NotYetImplementedException();
+        if (key == null)
+            throw new IllegalArgumentException();
+
+        HashTrieNode temp = (HashTrieNode) root;
+        for (A alph : key) {
+            // Check for each alph
+            if (!temp.pointers.containsKey(alph)) {
+                return null;
+            }
+            temp = temp.pointers.get(alph);
+        }
+
+        return temp.value;
     }
 
     @Override
     public boolean findPrefix(K key) {
-        throw new NotYetImplementedException();
+        if (key == null)
+            throw new IllegalArgumentException();
+
+        HashTrieNode temp = (HashTrieNode) root;
+        for (A alph : key) {
+            // Check for each alph
+            if (!temp.pointers.containsKey(alph)) {
+                return false;
+            }
+            temp = temp.pointers.get(alph);
+        }
+
+        return true;
     }
 
     @Override
     public void delete(K key) {
-        throw new NotYetImplementedException();
+        if (key == null)
+            throw new IllegalArgumentException();
+
+        root = delete((HashTrieNode) root, key.iterator());
+    }
+
+    private HashTrieNode delete(HashTrieNode node, Iterator<A> iter) {
+        if (node == null) {
+            return null;
+        }
+
+        if (!iter.hasNext()) { // End of the key
+            if (node.value != null) {
+                node.value = null;
+                size--;
+            }
+        } else {
+            A alph = iter.next();
+            if (node.pointers.containsKey(alph)) {
+                node.pointers.put(alph, delete(node.pointers.get(alph), iter));
+                if (node.pointers.get(alph) == null) {
+                    node.pointers.remove(alph);
+                }
+            }
+        }
+
+        if (node.value != null || !node.pointers.isEmpty()) {
+            return node;
+        }
+
+        return null;
     }
 
     @Override
     public void clear() {
-        throw new NotYetImplementedException();
+        this.root = new HashTrieNode();
+        size = 0;
     }
 }

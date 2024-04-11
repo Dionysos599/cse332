@@ -3,6 +3,8 @@ package datastructures.dictionaries;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
 
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V insert(K key, V value) {
         if (key == null || value == null)
             throw new IllegalArgumentException();
@@ -55,11 +58,11 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (previous == null) {
             size++;
         }
-
         return previous;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V find(K key) {
         if (key == null)
             throw new IllegalArgumentException();
@@ -77,6 +80,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean findPrefix(K key) {
         if (key == null)
             throw new IllegalArgumentException();
@@ -94,12 +98,18 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void delete(K key) {
         if (key == null)
             throw new IllegalArgumentException();
 
         HashTrieNode result = delete((HashTrieNode) root, key.iterator());
-        root = result == null ? new HashTrieNode() : result;
+        if (result == null) {
+            root = new HashTrieNode();
+        } else {
+            root = result;
+        }
+
     }
 
     private HashTrieNode delete(HashTrieNode node, Iterator<A> iter) {

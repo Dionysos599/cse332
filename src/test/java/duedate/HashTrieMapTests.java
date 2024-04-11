@@ -5,9 +5,7 @@ import datastructures.dictionaries.HashTrieMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -99,6 +97,55 @@ public class HashTrieMapTests {
         containsPath(STUDENT_TRIE, "cat");
     }
 
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void testFuzz() {
+        Map<String, Integer> refMap = new HashMap<>();
+        HashTrieMap<Character, AlphabeticString, Integer> testMap = new HashTrieMap<>(AlphabeticString.class);
+        Random randy = new Random();
+
+        for (int i = 0; i < 100000; i++) {
+            int operation = randy.nextInt(7);
+
+            if (operation == 0 || operation == 1) {
+                // Insert
+                String key = genRandKey(randy);
+                Integer value = randy.nextInt(1000);
+                refMap.put(key, value);
+                testMap.insert(toAlphabeticString(key), value);
+            } else if ((operation == 2 || operation == 3) && !refMap.isEmpty()) {
+                // Delete
+                String key = getRandKey(refMap, randy);
+                refMap.remove(key);
+                testMap.delete(toAlphabeticString(key));
+            } else if (operation == 4) {
+                // Clear
+                refMap.clear();
+                testMap.clear();
+            } else if (operation == 5) {
+                // Find
+                String key = genRandKey(randy);
+                Integer refValue = refMap.get(key);
+                Integer testValue = testMap.find(toAlphabeticString(key));
+                assertEquals(refValue, testValue);
+            } else if (operation == 6) {
+                // FindPrefix
+                String prefix = genRandKey(randy);
+                boolean refResult = false;
+                for (String key : refMap.keySet()) {
+                    if (key.startsWith(prefix)) {
+                        refResult = true;
+                        break;
+                    }
+                }
+                boolean testResult = testMap.findPrefix(toAlphabeticString(prefix));
+                assertEquals(refResult, testResult, "Prefix: " + prefix + " not found in testMap");
+            }
+
+            assertEquals(refMap.size(), testMap.size(), "Size not matched");
+        }
+    }
+
     // UTILITY METHODS
 
     /**
@@ -135,5 +182,27 @@ public class HashTrieMapTests {
             assertTrue(trie.findPrefix(toAlphabeticString(accumulatedWord)),
                        "Could not find prefix " + accumulatedWord + " of the word " + word);
         }
+    }
+
+    /**
+     * Generates a random key of random length.
+     */
+    private String genRandKey(Random randy) {
+        int length = randy.nextInt(10) + 1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            char c = (char) (randy.nextInt(26) + 'a');
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Gets a random key from the map.
+     */
+    private String getRandKey(Map<String, Integer> map, Random randy) {
+        List<String> keys = new ArrayList<>(map.keySet());
+        int index = randy.nextInt(keys.size());
+        return keys.get(index);
     }
 }

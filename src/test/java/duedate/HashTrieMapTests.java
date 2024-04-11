@@ -97,6 +97,9 @@ public class HashTrieMapTests {
         containsPath(STUDENT_TRIE, "cat");
     }
 
+    /**
+     * Simulate a large number of random insertions, deletions, finds, and findPrefixes
+     */
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void testFuzz() {
@@ -105,30 +108,30 @@ public class HashTrieMapTests {
         Random randy = new Random();
 
         for (int i = 0; i < 100000; i++) {
-            int operation = randy.nextInt(7);
+            int testCase = randy.nextInt(7);
 
-            if (operation == 0 || operation == 1) {
+            if (testCase == 0 || testCase == 1) {
                 // Insert
                 String key = genRandKey(randy);
                 Integer value = randy.nextInt(1000);
                 refMap.put(key, value);
                 testMap.insert(toAlphabeticString(key), value);
-            } else if ((operation == 2 || operation == 3) && !refMap.isEmpty()) {
+            } else if ((testCase == 2 || testCase == 3) && !refMap.isEmpty()) {
                 // Delete
                 String key = getRandKey(refMap, randy);
                 refMap.remove(key);
                 testMap.delete(toAlphabeticString(key));
-            } else if (operation == 4) {
+            } else if (testCase == 4) {
                 // Clear
                 refMap.clear();
                 testMap.clear();
-            } else if (operation == 5) {
+            } else if (testCase == 5) {
                 // Find
                 String key = genRandKey(randy);
                 Integer refValue = refMap.get(key);
                 Integer testValue = testMap.find(toAlphabeticString(key));
                 assertEquals(refValue, testValue);
-            } else if (operation == 6) {
+            } else if (testCase == 6) {
                 // FindPrefix
                 String prefix = genRandKey(randy);
                 boolean refResult = false;

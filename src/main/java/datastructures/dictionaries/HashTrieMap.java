@@ -98,7 +98,8 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         if (key == null)
             throw new IllegalArgumentException();
 
-        root = delete((HashTrieNode) root, key.iterator());
+        HashTrieNode result = delete((HashTrieNode) root, key.iterator());
+        root = result == null ? new HashTrieNode() : result;
     }
 
     private HashTrieNode delete(HashTrieNode node, Iterator<A> iter) {

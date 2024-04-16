@@ -3,7 +3,6 @@ package datastructures.worklists;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
@@ -20,7 +19,6 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
         arr = (E[])new Comparable[capacity];
-        Arrays.fill(arr, null);
     }
 
     @Override
@@ -80,6 +78,8 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     @Override
     public void clear() {
         arr = (E[])new Comparable[capacity()];
+        front = 0;
+        back = 0;
         size = 0;
     }
 

@@ -20,7 +20,6 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
         arr = (E[])new Comparable[capacity];
-        Arrays.fill(arr, null);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public void clear() {
-        Arrays.fill(arr, null);
+        arr = (E[])new Comparable[capacity()];
         front = 0;
         back = 0;
         size = 0;

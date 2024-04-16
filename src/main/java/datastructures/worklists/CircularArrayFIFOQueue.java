@@ -43,6 +43,9 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
         else if (i < 0 || i >= size())
             throw new IndexOutOfBoundsException();
 
+        if (size() == 0)
+            return null;
+
         return arr[(front + i) % capacity()];
     }
 

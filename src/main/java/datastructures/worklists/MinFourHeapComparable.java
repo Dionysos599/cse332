@@ -18,14 +18,10 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
         data = (E[]) new Comparable[DEFAULT_SIZE];
     }
 
-    private int parent(int i) {
-        return (i - 1) / 4;
-    }
-
     private int percolateUp(int hole, E work) {
-        while (hole > 0 && work.compareTo(data[parent(hole)]) < 0) {
-            data[hole] = data[parent(hole)];
-            hole = parent(hole);
+        while (hole > 0 && work.compareTo(data[(hole - 1) / 4]) < 0) {
+            data[hole] = data[(hole - 1) / 4];
+            hole = (hole - 1) / 4;
         }
         return hole;
     }

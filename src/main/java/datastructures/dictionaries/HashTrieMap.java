@@ -82,9 +82,8 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     public boolean findPrefix(K key) {
         if (key == null)
             throw new IllegalArgumentException();
-        if (isEmpty()) {
+        if (isEmpty())
             return false;
-        }
 
         HashTrieNode temp = (HashTrieNode) root;
         for (A alph : key) {

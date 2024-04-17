@@ -9,12 +9,13 @@ import java.util.NoSuchElementException;
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
+@SuppressWarnings("unchecked")
 public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
+
     private int front;
     private int back;
     private E[] arr;
     private int size;
-
     public CircularArrayFIFOQueue(int capacity) {
         super(capacity);
         arr = (E[])new Comparable[capacity];
@@ -22,9 +23,9 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public void add(E work) {
-        if (isFull()) {
+        if (isFull())
             throw new IllegalStateException("Queue is full");
-        }
+
         arr[back] = work;
         back = (back + 1) % capacity();
         size++;
@@ -37,19 +38,22 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public E peek(int i) {
-        if (!hasWork()) {
+        if (!hasWork())
             throw new NoSuchElementException();
-        } else if (i < 0 || i >= size()) {
+        else if (i < 0 || i >= size())
             throw new IndexOutOfBoundsException();
-        }
+
+        if (size() == 0)
+            return null;
+
         return arr[(front + i) % capacity()];
     }
 
     @Override
     public E next() {
-        if (!hasWork()) {
+        if (!hasWork())
             throw new NoSuchElementException();
-        }
+
         E work = arr[front];
         front = (front + 1) % capacity();
         size--;
@@ -58,11 +62,11 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public void update(int i, E value) {
-        if (!hasWork()) {
+        if (!hasWork())
             throw new NoSuchElementException();
-        } else if (i < 0 || i >= size()) {
+        else if (i < 0 || i >= size())
             throw new IndexOutOfBoundsException();
-        }
+
         arr[(front + i) % capacity()] = value;
     }
 
@@ -74,6 +78,8 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     @Override
     public void clear() {
         arr = (E[])new Comparable[capacity()];
+        front = 0;
+        back = 0;
         size = 0;
     }
 
@@ -84,7 +90,6 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         // You will finish implementing this method in project 2. Leave this method unchanged for project 1.
         if (this == obj) {

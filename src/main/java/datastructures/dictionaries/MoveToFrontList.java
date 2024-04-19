@@ -1,9 +1,7 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.containers.Item;
-import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.DeletelessDictionary;
-import datastructures.worklists.ListFIFOQueue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -30,15 +28,11 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
         if (key == null || value == null)
             throw new IllegalArgumentException("Null key/value");
 
-        Node<K, V> curr = head;
-        while (curr != null) { // find if key exists
-            if (curr.key.equals(key)) {
-                V oldVal = curr.value;
-                curr.value = value;
-                moveFront(curr);
-                return oldVal;
-            }
-            curr = curr.next;
+
+        V oldVal = find(key); // if key exists, move to front
+        if (oldVal != null) {  // if exists, update its value
+            head.value = value;
+            return oldVal;
         }
 
         // not exist, create and add to front
@@ -51,32 +45,27 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
     @Override
     public V find(K key) {
-        if (key == null) {
-            throw new IllegalArgumentException("Key cannot be null");
-        }
+        if (key == null)
+            throw new IllegalArgumentException("Null key");
 
         Node<K, V> curr = head;
         while (curr != null) {
-            if (curr.key.equals(key)) {
-                // found key, move front and return its value
-                moveFront(curr);
+            if (curr.key.equals(key)) { // found key, move to front and return its value
+                if (curr != head) {
+                    Node<K, V> temp = head;
+                    while (temp.next != curr) {
+                        temp = temp.next;
+                    }
+                    temp.next = curr.next;
+                    curr.next = head;
+                    head = curr;
+                }
                 return curr.value;
             }
+
             curr = curr.next;
         }
         return null;
-    }
-
-    private void moveFront(Node<K, V> curr) {
-        if (curr != head) {
-            Node<K, V> prev = head;
-            while (prev.next != curr) {
-                prev = prev.next;
-            }
-            prev.next = curr.next;
-            curr.next = head;
-            head = curr;
-        }
     }
 
     @Override

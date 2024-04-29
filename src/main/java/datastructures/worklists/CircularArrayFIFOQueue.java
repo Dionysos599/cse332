@@ -85,30 +85,46 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
-        // You will implement this method in project 2. Leave this method unchanged for project 1.
-        throw new NotYetImplementedException();
+        if (!(other instanceof CircularArrayFIFOQueue)) {
+            throw new IllegalArgumentException("Expected type: CircularArrayFIFOQueue");
+        }
+
+        CircularArrayFIFOQueue<E> otherQueue = (CircularArrayFIFOQueue<E>) other;
+        int minSize = Math.min(this.size, otherQueue.size);
+
+        for (int i = 0; i < minSize; i++) {
+            E thisElement = this.arr[(this.front + i) % this.arr.length];
+            E otherElement = otherQueue.arr[(otherQueue.front + i) % otherQueue.arr.length];
+
+            if (thisElement == null && otherElement != null) {
+                return -1;
+            } else if (thisElement != null && otherElement == null) {
+                return 1;
+            } else if (thisElement != null && otherElement != null) {
+                int comparison = ((Comparable<E>) thisElement).compareTo(otherElement);
+                if (comparison != 0) {
+                    return comparison;
+                }
+            }
+        }
+
+        return Integer.compare(this.size, otherQueue.size);
     }
 
     @Override
     public boolean equals(Object obj) {
-        // You will finish implementing this method in project 2. Leave this method unchanged for project 1.
         if (this == obj) {
             return true;
         } else if (!(obj instanceof FixedSizeFIFOWorkList<?>)) {
             return false;
         } else {
-            // Uncomment the line below for p2 when you implement equals
-            // FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
-
-            // Your code goes here
-
-            throw new NotYetImplementedException();
+            FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj;
+            return this.compareTo(other) == 0;
         }
     }
 
     @Override
     public int hashCode() {
-        // You will implement this method in project 2. Leave this method unchanged for project 1.
         throw new NotYetImplementedException();
     }
 }

@@ -100,7 +100,7 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
                 return -1;
             } else if (thisElement != null && otherElement == null) {
                 return 1;
-            } else if (thisElement != null && otherElement != null) {
+            } else if (thisElement != null) {
                 int comparison = ((Comparable<E>) thisElement).compareTo(otherElement);
                 if (comparison != 0) {
                     return comparison;

@@ -9,17 +9,17 @@ import java.util.Iterator;
 import java.util.function.Supplier;
 
 /**
- * - You must implement a generic chaining hashtable. You may not
+ *   <li>You must implement a generic chaining hashtable. You may not
  *   restrict the size of the input domain (i.e., it must accept
- *   any key) or the number of inputs (i.e., it must grow as necessary).
+ *   any key) or the number of inputs (i.e., it must grow as necessary). </li>
  *
- * - ChainingHashTable should rehash as appropriate (use load factor as shown in lecture!).
+ *   <li>ChainingHashTable should rehash as appropriate (use load factor as shown in lecture!).</li>
  *
- * - ChainingHashTable must resize its capacity into prime numbers via given PRIME_SIZES list.
- *   Past this, it should continue to resize using some other mechanism (primes not necessary).
+ *   <li>ChainingHashTable must resize its capacity into prime numbers via given PRIME_SIZES list.
+ *   Past this, it should continue to resize using some other mechanism (primes not necessary).</li>
  *
- * - When implementing your iterator, you should NOT copy every item to another
- *   dictionary/list and return that dictionary/list's iterator.
+ *   <li>When implementing your iterator, you should NOT copy every item to another
+ *   dictionary/list and return that dictionary/list's iterator.</li>
  */
 public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     private Supplier<Dictionary<K, V>> newChain;

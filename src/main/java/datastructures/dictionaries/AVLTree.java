@@ -25,6 +25,10 @@ import cse332.datastructures.trees.BinarySearchTree;
  *  <li>Do NOT override the toString method. It is used for grading.</li>
  *  <li>The internal structure of your AVLTree (from this.root to the leaves) must be correct</li>
  * </ol>
+ *
+ * @param <K> the type of keys maintained by this AVL tree
+ * @param <V> the type of mapped values
+ * @see BinarySearchTree
  */
 public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTree<K, V> {
 
@@ -37,21 +41,37 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
     }
 
+    /**
+     * Create an empty AVL tree.
+     *
+     * @param key   the type of keys maintained by this AVL tree
+     * @param value the type of mapped values
+     * @return the old value associated with the key, or null if the key did not
+     */
     @Override
     public V insert(K key, V value) {
-        if (key == null || value == null) {
+        if (key == null || value == null)
             throw new IllegalArgumentException("Key or value cannot be null");
-        }
+
         this.root = insert((AVLNode) this.root, key, value);
         return value;
     }
 
+    /**
+     * Insert a new node with the given key and value into the AVL tree.
+     *
+     * @param root the root of the AVL tree
+     * @param key the key of the new node
+     * @param value the value of the new node
+     * @return the root of the AVL tree
+     */
     private AVLNode insert(AVLNode root, K key, V value) {
         if (root == null) {
             size++;
             return new AVLNode(key, value);
         }
 
+        // Insert the new node
         int cmp = key.compareTo(root.key);
         if (cmp < 0) {
             root.children[0] = insert((AVLNode) root.children[0], key, value);
@@ -62,17 +82,18 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return root;
         }
 
+        // Update the height of the current node
         root.height = 1 + Math.max(height((AVLNode) root.children[0]), height((AVLNode) root.children[1]));
 
-        int balance = height((AVLNode) root.children[0]) - height((AVLNode) root.children[1]);
-
-        if (balance > 1) {
+        // Balance the tree
+        int heightDiff = height((AVLNode) root.children[0]) - height((AVLNode) root.children[1]);
+        if (heightDiff > 1) {
             if (key.compareTo((root.children[0]).key) < 0) {
                 return rotateWithLeft(root);
             } else {
                 return doubleRotateWithLeft(root);
             }
-        } else if (balance < -1) {
+        } else if (heightDiff < -1) {
             if (key.compareTo((root.children[1]).key) > 0) {
                 return rotateWithRight(root);
             } else {
@@ -84,12 +105,18 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     }
 
     private int height(AVLNode root) {
-        if (root == null) {
+        if (root == null)
             return -1;
-        }
+
         return root.height;
     }
 
+    /**
+     * Single rotation with left child.
+     *
+     * @param root the root of the AVL tree
+     * @return the root of the AVL tree
+     */
     private AVLNode rotateWithLeft(AVLNode root) {
         AVLNode temp = (AVLNode) root.children[0];
         root.children[0] = temp.children[1];
@@ -101,6 +128,12 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return temp;
     }
 
+    /**
+     * Single rotation with right child.
+     *
+     * @param root the root of the AVL tree
+     * @return the root of the AVL tree
+     */
     private AVLNode rotateWithRight(AVLNode root) {
         AVLNode temp = (AVLNode) root.children[1];
         root.children[1] = temp.children[0];
@@ -112,11 +145,25 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return temp;
     }
 
+    /**
+     * Double rotation with left child.
+     * First rotate the left child with its right child, then rotate the root with the new left child.
+     *
+     * @param root the root of the AVL tree
+     * @return the root of the AVL tree
+     */
     private AVLNode doubleRotateWithLeft(AVLNode root) {
         root.children[0] = rotateWithRight((AVLNode) root.children[0]);
         return rotateWithLeft(root);
     }
 
+    /**
+     * Double rotation with right child.
+     * First rotate the right child with its left child, then rotate the root with the new right child.
+     *
+     * @param root the root of the AVL tree
+     * @return the root of the AVL tree
+     */
     private AVLNode doubleRotateWithRight(AVLNode root) {
         root.children[1] = rotateWithLeft((AVLNode) root.children[1]);
         return rotateWithRight(root);

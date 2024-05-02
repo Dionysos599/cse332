@@ -10,3 +10,4 @@ worklists:
 
 dictionaries:
  - MoveToFrontList
+ - AVLTree

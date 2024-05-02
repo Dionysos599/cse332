@@ -51,7 +51,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     @Override
     public V insert(K key, V value) {
         if (key == null || value == null)
-            throw new IllegalArgumentException("Key or value cannot be null");
+            throw new IllegalArgumentException("Null key/value");
 
         this.root = insert((AVLNode) this.root, key, value);
         return value;
@@ -71,7 +71,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return new AVLNode(key, value);
         }
 
-        // Insert the new node
+        // Insert
         int cmp = key.compareTo(root.key);
         if (cmp < 0) {
             root.children[0] = insert((AVLNode) root.children[0], key, value);
@@ -81,11 +81,10 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             root.value = value;
             return root;
         }
-
         // Update the height of the current node
-        root.height = 1 + Math.max(height((AVLNode) root.children[0]), height((AVLNode) root.children[1]));
+        root.height = Math.max(height((AVLNode) root.children[0]), height((AVLNode) root.children[1])) + 1;
 
-        // Balance the tree
+        // Balance
         int heightDiff = height((AVLNode) root.children[0]) - height((AVLNode) root.children[1]);
         if (heightDiff > 1) {
             if (key.compareTo((root.children[0]).key) < 0) {

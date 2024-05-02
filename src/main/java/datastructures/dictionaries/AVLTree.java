@@ -81,9 +81,8 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             root.value = value;
             return root;
         }
-
         // Update the height of the current node
-        root.height = 1 + Math.max(height((AVLNode) root.children[0]), height((AVLNode) root.children[1]));
+        root.height = Math.max(height((AVLNode) root.children[0]), height((AVLNode) root.children[1])) + 1;
 
         // Balance
         int heightDiff = height((AVLNode) root.children[0]) - height((AVLNode) root.children[1]);

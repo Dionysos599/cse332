@@ -1,6 +1,5 @@
 package datastructures.worklists;
 
-import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
 import java.util.NoSuchElementException;
@@ -125,6 +124,18 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     @Override
     public int hashCode() {
-        throw new NotYetImplementedException();
+        int result = 17;
+
+        // Include the size and capacity in the hash code calculation
+        result = 31 * result + size;
+        result = 31 * result + capacity();
+
+        // Include the hash codes of the elements in the queue
+        for (int i = 0; i < size; i++) {
+            E element = arr[(front + i) % capacity()];
+            result = 31 * result + (element != null ? element.hashCode() : 0);
+        }
+
+        return result;
     }
 }

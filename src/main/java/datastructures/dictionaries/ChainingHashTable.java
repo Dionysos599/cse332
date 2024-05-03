@@ -68,22 +68,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     }
 
     @Override
-    public int hashCode() {
-        int result = 17;
-
-        result = 31 * result + capacity;
-        result = 31 * result + Double.hashCode(loadFactor);
-
-        for (int i = 0; i < capacity; i++) {
-            if (table[i] != null && !table[i].isEmpty()) {
-                result = 31 * result + table[i].hashCode();
-            }
-        }
-
-        return result;
-    }
-
-    @Override
     public Iterator<Item<K, V>> iterator() {
         return new ChainingHashTableIterator();
     }

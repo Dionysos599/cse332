@@ -34,7 +34,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         this.newChain = newChain;
         this.size = 0;
         this.capacity = PRIME_SIZES[0];
-        this.loadFactor = 0.75;
+        this.loadFactor = 0.5;
         this.table = (Dictionary<K, V>[]) new Dictionary[this.capacity];
         for (int i = 0; i < this.capacity; i++) {
             this.table[i] = this.newChain.get();

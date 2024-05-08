@@ -24,7 +24,6 @@ import java.util.function.Supplier;
 public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     private Supplier<Dictionary<K, V>> newChain;
     private Dictionary<K, V>[] table;
-    private int size;
     private int capacity;
     private final double loadFactor;
 
@@ -42,6 +41,18 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         }
     }
 
+    /**
+     * Inserts the specified key-value pair into the dictionary. If the key is already
+     * present in the dictionary, the value associated with the key is replaced with the
+     * specified value.
+     *
+     * @param key
+     *            key with which the specified value is to be associated
+     * @param value
+     *              value to be associated with the specified key
+     *
+     * @return  the old value associated with the key, or null if the key did not
+     */
     @Override
     public V insert(K key, V value) {
         if (key == null || value == null)
@@ -52,13 +63,24 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         }
 
         int index = this.hash(key);
-        V oldValue = this.table[index].insert(key, value);
+        V oldValue = this.table[index].find(key);
+        this.table[index].insert(key, value);
         if (oldValue == null) {
             this.size++;
         }
         return oldValue;
     }
 
+    /**
+     * Returns the value to which the specified key is mapped, or null if this dictionary
+     * contains no mapping for the key.
+     *
+     * @param key
+     *            the key whose associated value is to be returned
+     *
+     * @return  the value to which the specified key is mapped, or null if this dictionary
+     *          contains no mapping for the key
+     */
     @Override
     public V find(K key) {
         if (key == null)
@@ -66,11 +88,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
         int index = this.hash(key);
         return this.table[index].find(key);
-    }
-
-    @Override
-    public int size() {
-        return this.size;
     }
 
     @Override

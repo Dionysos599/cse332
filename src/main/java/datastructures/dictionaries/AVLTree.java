@@ -78,7 +78,11 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         } else if (cmp > 0) {
             root.children[1] = insert((AVLNode) root.children[1], key, value);
         } else {
+            V oldValue = root.value;
             root.value = value;
+            if (oldValue == null) {
+                size++;
+            }
             return root;
         }
         // Update the height of the current node

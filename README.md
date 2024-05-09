@@ -9,5 +9,8 @@ worklists:
  - MinFourHeapComparable
 
 dictionaries:
- - MoveToFrontList
  - AVLTree
+ - ChainingHashTable
+ - HashTrieMap
+ - HashTrieSet 
+ - MoveToFrontList

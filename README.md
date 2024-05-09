@@ -9,6 +9,7 @@ worklists:
  - ArrayStack
  - CircularArrayFIFOQueue
  - ListFIFOQueue
+ - MinFourHeap
  - MinFourHeapComparable
 
 dictionaries:

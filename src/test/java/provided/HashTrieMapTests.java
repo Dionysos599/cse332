@@ -160,7 +160,7 @@ public class HashTrieMapTests {
     public void test_insertFindFindPrefix_manyElements_correctStructure() {
         HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
         // Should contain 30 characters
-        char[] symbols = "abcdefghijklmnopqrstuvwxyz!@#$".toCharArray();
+        char[] symbols = "abcdefghijklmnopqrstuvwxyz`!@#$".toCharArray();
         long i = 0;
         for (char a : symbols) {
             for (char b : symbols) {

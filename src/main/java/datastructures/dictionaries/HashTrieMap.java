@@ -1,10 +1,10 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.containers.Item;
-import cse332.interfaces.trie.TrieMap;
-import cse332.types.BString;
 import cse332.interfaces.misc.Dictionary;
 import cse332.interfaces.misc.SimpleIterator;
+import cse332.interfaces.trie.TrieMap;
+import cse332.types.BString;
 
 import java.util.AbstractMap;
 import java.util.Iterator;

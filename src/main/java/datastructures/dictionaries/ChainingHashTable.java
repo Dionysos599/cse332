@@ -109,7 +109,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     }
 
     private void resize() {
-        int newCapacity = capacity * 2;
+        int newCapacity = this.capacity * 2;
         for (int primeSize : PRIME_SIZES) {
             if (primeSize > newCapacity) {
                 newCapacity = primeSize;
@@ -117,27 +117,20 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             }
         }
 
-        Dictionary<K,V>[] newTable = new Dictionary[newCapacity];
-        int newSize = 0; // Variable to keep track of the new size
+        Dictionary<K, V>[] oldTable = this.table;
+        this.capacity = newCapacity;
+        this.table = (Dictionary<K, V>[]) new Dictionary[this.capacity];
+        for (int i = 0; i < this.capacity; i++) {
+            table[i] = this.newChain.get();
+        }
+        this.size = 0;
 
-        for (Dictionary<K,V> index : table) {
-            if (index != null) {
-                for (Item<K, V> item : index) {
-                    int newIndex = Math.abs(item.key.hashCode()) % newCapacity;
-                    if (newTable[newIndex] == null) {
-                        Dictionary<K, V> dict = newChain.get();
-                        dict.insert(item.key, item.value);
-                        newTable[newIndex] = dict;
-                    } else {
-                        newTable[newIndex].insert(item.key, item.value);
-                    }
-                    newSize++; // Increment the new size for each rehashed key-value pair
-                }
+        for (Dictionary<K, V> chain : oldTable) {
+            for (Item<K, V> item : chain) {
+                insert(item.key, item.value);
             }
         }
-        table = newTable;
         capacity = newCapacity;
-        size = newSize; // Update the size of the ChainingHashTable
     }
 
     private int hash(K key) {

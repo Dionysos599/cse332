@@ -176,6 +176,8 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
         @Override
         public Item<K, V> next() {
+            if (!hasNext())
+                throw new java.util.NoSuchElementException();
             return chainIterator.next();
         }
 

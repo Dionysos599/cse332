@@ -9,8 +9,11 @@ public class TopKSort {
         sort(array, k, (x, y) -> x.compareTo(y));
     }
 
-
     public static <E> void sort(E[] array, int k, Comparator<E> comparator) {
+        if (k <= 0 || k > array.length) {
+            throw new IllegalArgumentException("Invalid value of k: " + k);
+        }
+
         MinFourHeap<E> heap = new MinFourHeap<>(comparator);
         for (int i = 0; i < k; i++) {
             heap.add(array[i]);

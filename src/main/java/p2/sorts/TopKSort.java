@@ -10,24 +10,20 @@ public class TopKSort {
     }
 
     public static <E> void sort(E[] array, int k, Comparator<E> comparator) {
-        if (k <= 0 || k > array.length) {
-            throw new IllegalArgumentException("Invalid value of k: " + k);
-        }
-
         MinFourHeap<E> heap = new MinFourHeap<>(comparator);
-        for (int i = 0; i < k; i++) {
-            heap.add(array[i]);
-        }
-
-        for (int i = k; i < array.length; i++) {
-            if (comparator.compare(array[i], heap.peek()) > 0) {
+        for (E e : array) {
+            if (heap.size() < k) {
+                heap.add(e);
+            } else if (comparator.compare(e, heap.peek()) > 0) {
                 heap.next();
-                heap.add(array[i]);
+                heap.add(e);
             }
         }
 
-        for (int i = 0; i < k; i++) {
-            array[i] = heap.next();
+        for (int i = 0; i < array.length; i++) {
+            if (i < k) {
+                array[i] = heap.next();
+            }
         }
     }
 }

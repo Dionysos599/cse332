@@ -1,6 +1,5 @@
 package p2.sorts;
 
-import cse332.exceptions.NotYetImplementedException;
 import datastructures.worklists.MinFourHeap;
 
 import java.util.Comparator;

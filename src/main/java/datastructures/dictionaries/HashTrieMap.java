@@ -97,7 +97,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
     public HashTrieMap(Class<K> KClass) {
         super(KClass);
-        this.root = new HashTrieNode();
+        root = new HashTrieNode();
     }
 
     /**

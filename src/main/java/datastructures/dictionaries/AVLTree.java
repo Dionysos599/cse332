@@ -53,7 +53,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         if (key == null || value == null)
             throw new IllegalArgumentException("Null key/value");
 
-        this.root = insert((AVLNode) this.root, key, value);
+        root = insert((AVLNode) root, key, value);
         return value;
     }
 

@@ -23,10 +23,10 @@ import java.util.function.Supplier;
 @SuppressWarnings("unchecked")
 public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     private Supplier<Dictionary<K, V>> newChain;
-    private Dictionary<K, V>[] table;
     private int capacity;
-    private final double loadFactor;
+    private Dictionary<K, V>[] table;
 
+    static final double LOAD_FACTOR = 0.5;
     static final int[] PRIME_SIZES =
             {11, 23, 47, 97, 193, 389, 773, 1549, 3089, 6173, 12347, 24697, 49393, 98779, 197573, 395147};
 
@@ -34,7 +34,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         this.newChain = newChain;
         this.size = 0;
         this.capacity = PRIME_SIZES[0];
-        this.loadFactor = 0.5;
         this.table = (Dictionary<K, V>[]) new Dictionary[this.capacity];
         for (int i = 0; i < this.capacity; i++) {
             this.table[i] = this.newChain.get();
@@ -58,15 +57,15 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         if (key == null || value == null)
             throw new IllegalArgumentException("Null key/value");
 
-        if (size >= loadFactor * capacity) {
+        if (size >= LOAD_FACTOR * capacity) {
             resize();
         }
 
-        int index = hash(key);
+        int index = Math.abs(key.hashCode()) % capacity;
         if (table[index] == null) {
-            Dictionary<K, V> dict = newChain.get();
-            dict.insert(key, value);
-            table[index] = dict;
+            Dictionary<K, V> map = newChain.get();
+            map.insert(key, value);
+            table[index] = map;
             size++;
             return null;
         } else {
@@ -94,8 +93,10 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
      */
     @Override
     public V find(K key) {
-        if(key == null) { return null; }
-        int index = hash(key);
+        if (key == null)
+            return null;
+
+        int index = Math.abs(key.hashCode()) % capacity;
         if (table[index] == null) {
             return null;
         } else {
@@ -109,7 +110,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     }
 
     private void resize() {
-        int newCapacity = this.capacity * 2;
+        int newCapacity = capacity * 2;
         for (int primeSize : PRIME_SIZES) {
             if (primeSize > newCapacity) {
                 newCapacity = primeSize;
@@ -117,13 +118,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             }
         }
 
-        Dictionary<K, V>[] oldTable = this.table;
-        this.capacity = newCapacity;
-        this.table = (Dictionary<K, V>[]) new Dictionary[this.capacity];
-        for (int i = 0; i < this.capacity; i++) {
-            table[i] = this.newChain.get();
+        Dictionary<K, V>[] oldTable = table;
+        capacity = newCapacity;
+        table = (Dictionary<K, V>[]) new Dictionary[capacity];
+        for (int i = 0; i < capacity; i++) {
+            table[i] = newChain.get();
         }
-        this.size = 0;
+        size = 0;
 
         for (Dictionary<K, V> chain : oldTable) {
             for (Item<K, V> item : chain) {
@@ -131,10 +132,6 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             }
         }
         capacity = newCapacity;
-    }
-
-    private int hash(K key) {
-        return Math.abs(key.hashCode()) % capacity;
     }
 
     private class ChainingHashTableIterator implements Iterator<Item<K, V>> {

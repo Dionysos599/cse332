@@ -23,6 +23,8 @@ public class TopKSort {
         for (int i = 0; i < array.length; i++) {
             if (i < k) {
                 array[i] = heap.next();
+            } else {
+                array[i] = null;
             }
         }
     }

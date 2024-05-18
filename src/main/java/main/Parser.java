@@ -2,6 +2,8 @@ package main;
 
 import cse332.exceptions.NotYetImplementedException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,23 @@ public class Parser {
      * @return Adjacency list of maps from node to weight
      */
     public static List<Map<Integer, Integer>> parse(int[][] adjMatrix) {
-        throw new NotYetImplementedException();
+        int numVert = adjMatrix.length;
+        List<Map<Integer, Integer>> adjList = new ArrayList<>();
+
+        for (int i = 0; i < numVert; i++) {
+            adjList.add(new HashMap<>());
+        }
+
+        for (int i = 0; i < numVert; i++) {
+            for (int j = 0; j < numVert; j++) {
+                int weight = adjMatrix[i][j];
+                if (weight != 0) {
+                    adjList.get(i).put(j, weight);
+                }
+            }
+        }
+
+        return adjList;
     }
 
     /**

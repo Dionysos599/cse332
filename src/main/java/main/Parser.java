@@ -1,6 +1,7 @@
 package main;
 
 import cse332.exceptions.NotYetImplementedException;
+import cse332.graph.GraphUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class Parser {
         for (int i = 0; i < numVert; i++) {
             for (int j = 0; j < numVert; j++) {
                 int weight = adjMatrix[i][j];
-                if (weight != 0) {
+                if (weight != GraphUtil.INF) {
                     adjList.get(i).put(j, weight);
                 }
             }

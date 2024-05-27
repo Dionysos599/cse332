@@ -31,9 +31,9 @@ public class OutSequential implements BellmanFordSolver {
             }
 
             for (int v = 0; v < n; v++) {
-                for (Map.Entry<Integer, Integer> entry : g.get(v).entrySet()) {
-                    int w = entry.getKey();
-                    int cost = entry.getValue();
+                Map<Integer, Integer> edges = g.get(v);
+                for (Integer w : edges.keySet()) {
+                    int cost = edges.get(w);
                     if (dist_copy[v] != GraphUtil.INF && dist_copy[v] + cost < dist[w]) {
                         // Found a shorter path to w
                         dist[w] = dist_copy[v] + cost;

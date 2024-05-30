@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RelaxOutTaskLock extends RecursiveAction {
 
     public static final ForkJoinPool pool = new ForkJoinPool();
-    public static final int CUTOFF = 1000;
+    public static final int CUTOFF = 1;
 
     private final List<Map<Integer, Integer>> g;
     private final int[] dist;
@@ -32,7 +32,7 @@ public class RelaxOutTaskLock extends RecursiveAction {
 
     protected void compute() {
         if (hi - lo <= CUTOFF) {
-            sequential(lo, hi);
+            sequential(lo, hi, g, dist, dist_copy, pred, locks);
         } else {
             int mid = lo + (hi - lo) / 2;
             RelaxOutTaskLock left = new RelaxOutTaskLock(g, dist, dist_copy, pred, lo, mid, locks);
@@ -44,7 +44,8 @@ public class RelaxOutTaskLock extends RecursiveAction {
         }
     }
 
-    private void sequential(int lo, int hi) {
+    private static void sequential(int lo, int hi, List<Map<Integer, Integer>> g,
+                                   int[] dist, int[] dist_copy, int[] pred, ReentrantLock[] locks) {
         for (int v = lo; v < hi; v++) {
             Map<Integer, Integer> edges = g.get(v);
             for (Integer w : edges.keySet()) {

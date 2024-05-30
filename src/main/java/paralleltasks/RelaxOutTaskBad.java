@@ -10,7 +10,7 @@ import java.util.concurrent.RecursiveAction;
 public class RelaxOutTaskBad extends RecursiveAction {
 
     public static final ForkJoinPool pool = new ForkJoinPool();
-    public static final int CUTOFF = 1000;
+    public static final int CUTOFF = 1;
 
     private final List<Map<Integer, Integer>> g;
     private final int[] dist;
@@ -29,7 +29,7 @@ public class RelaxOutTaskBad extends RecursiveAction {
 
     protected void compute() {
         if (hi - lo <= CUTOFF) {
-            sequential(lo, hi);
+            sequential(lo, hi, g, dist, dist_copy, pred);
         } else {
             int mid = lo + (hi - lo) / 2;
             RelaxOutTaskBad left = new RelaxOutTaskBad(g, dist, dist_copy, pred, lo, mid);
@@ -41,7 +41,8 @@ public class RelaxOutTaskBad extends RecursiveAction {
         }
     }
 
-    private void sequential(int lo, int hi) {
+    private static void sequential(int lo, int hi, List<Map<Integer, Integer>> g,
+                                   int[] dist, int[] dist_copy, int[] pred) {
         for (int v = lo; v < hi; v++) {
             Map<Integer, Integer> edges = g.get(v);
             for (Integer w : edges.keySet()) {

@@ -1,4 +1,5 @@
 ## CSE 332
+<<<<<<< HEAD
 # macOS Finger proprietary
 .DS_Store
 
@@ -8,6 +9,18 @@
 .idea
 
 >>>>>>> p2
+=======
+
+gradlew
+gradlew.bat
+
+# macOS Finder proprietary
+.DS_Store
+
+# IntelliJ folder
+.idea
+
+>>>>>>> p3
 ## https://raw.githubusercontent.com/github/gitignore/master/Java.gitignore
 # Compiled class file
 *.class
@@ -34,6 +47,7 @@
 hs_err_pid*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # IntelliJ
 .idea
 
@@ -41,6 +55,8 @@ hs_err_pid*
 .gradle
 build
 =======
+=======
+>>>>>>> p3
 ## https://raw.githubusercontent.com/github/gitignore/master/Global/JetBrains.gitignore
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -130,4 +146,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+<<<<<<< HEAD
 >>>>>>> p2
+=======
+>>>>>>> p3
